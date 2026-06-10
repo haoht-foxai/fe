@@ -299,7 +299,8 @@ export function UploadAnalyze() {
 
   const addFiles = useCallback((incoming: FileList | null) => {
     if (!incoming) return;
-    const pdfs = Array.from(incoming).filter((f) => f.type === 'application/pdf');
+    const ALLOWED = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const pdfs = Array.from(incoming).filter((f) => ALLOWED.includes(f.type) || f.name.match(/\.(pdf|doc|docx)$/i) !== null);
     setFiles((prev) => {
       const names = new Set(prev.map((f) => f.name));
       return [...prev, ...pdfs.filter((f) => !names.has(f.name))];
@@ -356,12 +357,12 @@ export function UploadAnalyze() {
             onClick={() => inputRef.current?.click()}
           >
             <span>
-              📄 Kéo thả file PDF vào đây hoặc <b>click để chọn</b>
+              📄 Kéo thả file PDF / Word vào đây hoặc <b>click để chọn</b>
             </span>
             <input
               ref={inputRef}
               type="file"
-              accept="application/pdf"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               multiple
               hidden
               onChange={(e) => addFiles(e.target.files)}

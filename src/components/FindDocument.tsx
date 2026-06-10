@@ -149,7 +149,7 @@ export function FindDocument() {
         <div className="fd-field">
           <label className="fd-label">
             File văn bản
-            <span className="fd-label-sub"> (PDF, có thể chọn nhiều file)</span>
+            <span className="fd-label-sub"> (PDF, Word, có thể chọn nhiều file)</span>
           </label>
           <div
             className={`fd-dropzone${dragging ? ' fd-dragging' : ''}`}
@@ -163,7 +163,7 @@ export function FindDocument() {
               ref={fileInputRef}
               type="file"
               multiple
-              accept=".pdf,application/pdf"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               style={{ display: 'none' }}
               onChange={handleFileChange}
             />
@@ -173,7 +173,7 @@ export function FindDocument() {
                 ? 'Thả file vào đây'
                 : <>Kéo thả file hoặc <span className="fd-drop-link">click để chọn</span></>}
             </p>
-            <p className="fd-drop-hint">Hỗ trợ nhiều file PDF cùng lúc</p>
+            <p className="fd-drop-hint">Hỗ trợ PDF, Word (.doc, .docx), nhiều file cùng lúc</p>
           </div>
         </div>
 
