@@ -130,7 +130,7 @@ export interface ResponsibilityAssignment {
   source_location: { page: number; section: string };
   hallucination_risk: string;
   confidence: { staff_match: number; department_match: number; task_extraction: number };
-  staff: StaffInfo;
+  staff: StaffInfo | null;
   staff_match_status: string;
 }
 

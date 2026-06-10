@@ -44,10 +44,11 @@ function ResultView({ result }: { result: QuickAnalyzeResult }) {
   const s = result.document_summary;
 
   const byStaff = result.responsibility_assignments.reduce<
-    Record<string, { staff: StaffInfo; items: ResponsibilityAssignment[] }>
+    Record<string, { staff: StaffInfo | null; rawName: string; items: ResponsibilityAssignment[] }>
   >((acc, item) => {
-    if (!acc[item.staff_id]) acc[item.staff_id] = { staff: item.staff, items: [] };
-    acc[item.staff_id].items.push(item);
+    const key = item.staff_id ?? item.raw_name ?? 'unknown';
+    if (!acc[key]) acc[key] = { staff: item.staff, rawName: item.raw_name, items: [] };
+    acc[key].items.push(item);
     return acc;
   }, {});
 
@@ -121,9 +122,13 @@ function ResultView({ result }: { result: QuickAnalyzeResult }) {
         title={`👤 Phân công nhiệm vụ (${result.responsibility_assignments.length})`}
         defaultOpen
       >
-        {Object.values(byStaff).map(({ staff, items }) => (
-          <div key={staff.id} className="ua-person-block">
-            <StaffMiniCard staff={staff} />
+        {Object.values(byStaff).map(({ staff, rawName, items }) => (
+          <div key={staff?.id ?? rawName} className="ua-person-block">
+            {staff ? (
+              <StaffMiniCard staff={staff} />
+            ) : (
+              <div className="ua-staff-mini"><div className="ua-staff-name">{rawName}</div></div>
+            )}
             <ul className="ua-assign-list">
               {items.map((item, i) => (
                 <li key={i} className="ua-assign-item">
